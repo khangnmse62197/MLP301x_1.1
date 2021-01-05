@@ -1,8 +1,12 @@
-import pandas as pd
 import numpy as np
 
 
 def open_file(file_name):
+    """
+    open file with the same directory of this project.
+    If user input only the file name (not contain .txt extension). Progarm will automatically add .txt at the end
+    Open, validate, print statistics and save grade to another .txt file IF file's exist. If not, print out message.
+    """
     if not file_name.__contains__('.txt'):
         file_name += '.txt'
     try:
@@ -17,6 +21,9 @@ def open_file(file_name):
 
 
 def print_statistics(valid_lines):
+    """
+    print out statistics include: average, max, min, range, median of score 
+    """
     valid_lines_values = np.array(list(valid_lines.values()))
 
     print('Mean (average) score: ' + str(np.mean(valid_lines_values)))
@@ -27,6 +34,9 @@ def print_statistics(valid_lines):
 
 
 def save_grade(file_name, valid_lines):
+    """
+    save the detailed results for each student in class. Each line contain the student’s ID number, a comma, and then their grade
+    """
     file_grade_name = file_name.replace('.txt', '_grade.txt')
     with open('output/' + file_grade_name, 'w+') as file:
         for key, value in valid_lines.items():
@@ -35,6 +45,16 @@ def save_grade(file_name, valid_lines):
 
 
 def validate_format(file):
+    """
+    1. Report the total # of lines of data stored in the file.
+    2. Analyze each line and make sure that it is “valid.”
+        + A valid line contains a comma-separated list of 26 values
+        + The N# for a student is the first item on the line. It should contain the character “N” followed by 8 numeric characters.
+    3. If a line of data is not valid you should report it to the user by printing out an error message. 
+    You should also count the total # of valid lines of data in the file.
+    
+    return the dict of valid line
+    """
     print('**** ANALYZING ****')
     count_error_line = 0
     valid_lines = {}
@@ -90,6 +110,7 @@ def compute_grade(line):
         +4 points for every right answer
         0 points for every skipped answer
         -1 point for every incorrect answer
+    return dict with key = id, value = grade 
     """
     answer_key = 'B,A,D,D,C,B,D,A,C,C,D,B,A,B,A,C,B,D,A,C,A,A,B,D,D'.split(',')
     grade = 0
@@ -102,15 +123,20 @@ def compute_grade(line):
             grade -= 1
     return {line[0]: grade}
 
-
-filename = input("Enter a class to grade (i.e. class1 for class1.txt): ")
-open_file(filename)
-is_continue = 'Y'
-while is_continue == 'Y' or is_continue == 'y':
-    is_continue = input("Continue[y/N]: ")
-    if is_continue == 'y' or is_continue == 'Y':
-        filename = input("Enter a class to grade (i.e. class1 for class1.txt): ")
-        open_file(filename)
-    else:
-        print('Bye!')
-        is_continue = 'N'
+def main():
+    """
+    main process. Can let user input file file name at the beginning. then they can choose Y or N to continue working or not. No need to restart program
+    """
+    filename = input("Enter a class to grade (i.e. class1 for class1.txt): ")
+    open_file(filename)
+    is_continue = 'Y'
+    while is_continue == 'Y' or is_continue == 'y':
+        is_continue = input("Continue[y/N]: ")
+        if is_continue == 'y' or is_continue == 'Y':
+            filename = input("Enter a class to grade (i.e. class1 for class1.txt): ")
+            open_file(filename)
+        else:
+            print('Bye!')
+            is_continue = 'N'
+if __name__ == "__main__":
+    main()
