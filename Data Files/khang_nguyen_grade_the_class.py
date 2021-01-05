@@ -36,12 +36,13 @@ def print_statistics(valid_lines):
 def save_grade(file_name, valid_lines):
     """
     save the detailed results for each student in class. Each line contain the student’s ID number, a comma, and then their grade
+    The result was store in output folder
     """
     file_grade_name = file_name.replace('.txt', '_grade.txt')
     with open('output/' + file_grade_name, 'w+') as file:
         for key, value in valid_lines.items():
             file.writelines(key + ',' + str(value) + '\n')
-    print('File saved: ' + file_grade_name)
+    print('File saved in path: output/ ' + file_grade_name)
 
 
 def validate_format(file):
